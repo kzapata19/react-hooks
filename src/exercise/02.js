@@ -12,8 +12,12 @@ function Greeting({initialName = ''}) {
   // 🐨 Here's where you'll use `React.useEffect`.
   // The callback should set the `name` in localStorage.
   // 💰 window.localStorage.setItem('name', name)
-  React.useEffect(() => window.localStorage.setItem('name', name))
-
+  React.useEffect(() => window.localStorage.setItem('name', name), [name])
+  //Extra Credit 2 - pass a dependencies array to useEffect to restrict callback execution (which updates local storage) 
+  //only when "name" state changes
+  //React.useEffect gets called after every component render (including re-renders). However, other situations 
+  //(such as when a parent component in the app tree gets re-rendered) trigger re-rendering 
+  //that are not relevant to local storage updates
   function handleChange(event) {
     setName(event.target.value)
   }
