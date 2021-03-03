@@ -6,8 +6,9 @@ import * as React from 'react'
 function Greeting({initialName = ''}) {
   // 🐨 initialize the state to the value from localStorage
   // 💰 window.localStorage.getItem('name') || initialName
-  const [name, setName] = React.useState(window.localStorage.getItem('name') || initialName)
-
+  const [name, setName] = React.useState(() => window.localStorage.getItem('name') || initialName)
+//passing localStorage item as a callback fx instead of the value. Using a cb fx ensures the localStorage item is only
+//accessed only when needed (not every time name is updated)
   // 🐨 Here's where you'll use `React.useEffect`.
   // The callback should set the `name` in localStorage.
   // 💰 window.localStorage.setItem('name', name)
