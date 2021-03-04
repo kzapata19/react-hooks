@@ -21,16 +21,28 @@ import * as React from 'react'
   //Source: check out KCD's explanation on egghead: https://egghead.io/lessons/react-store-values-in-localstorage-with-the-react-useeffect-hook
   
   //Extra Credit 3 - Create custom hook (useLocalStorageState) for reusable logic
+// function useLocalStorageState(key, defaultValue = '') {
+//   const [state, setState] = React.useState(() => window.localStorage.getItem(key) || defaultValue);
+//   React.useEffect(() => window.localStorage.setItem(key, state), [key, state])
+//   return [state, setState];
+// }
+
+  //Extra Credit 4 - Refactor custom hook (useLocalStorageState) to support any data type
 function useLocalStorageState(key, defaultValue = '') {
-  const [state, setState] = React.useState(() => window.localStorage.getItem(key) || defaultValue);
-  React.useEffect(() => window.localStorage.setItem(key, state), [key, state])
+  const [state, setState] = React.useState(
+    () => {
+      const valueInLocalStorage = window.localStorage.getItem(key);
+      if(valueInLocalStorage) {
+        return JSON.parse(valueInLocalStorage)
+      } 
+      return defaultValue;
+    }
+  );
+  React.useEffect(() => window.localStorage.setItem(key, JSON.stringify(state)), [key, state])
   return [state, setState];
 }
 
 function Greeting({initialName = ''}) {
-  //  refactored above:
-  //  const [name, setName] = React.useState(() => window.localStorage.getItem('name') || initialName);
-  //  React.useEffect(() => window.localStorage.setItem('name', name), [name])
   const [name, setName] = useLocalStorageState('name', initialName)
   function handleChange(event) {
     setName(event.target.value)
