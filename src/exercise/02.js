@@ -28,17 +28,22 @@ import * as React from 'react'
 // }
 
   //Extra Credit 4 - Refactor custom hook (useLocalStorageState) to support any data type
-function useLocalStorageState(key, defaultValue = '') {
+  //Provide client the option to serialize/deserialize manually
+function useLocalStorageState(
+  key, 
+  defaultValue = '', 
+  {serialize = JSON.stringify, deserialize = JSON.parse} = {},
+) {
   const [state, setState] = React.useState(
     () => {
       const valueInLocalStorage = window.localStorage.getItem(key);
       if(valueInLocalStorage) {
-        return JSON.parse(valueInLocalStorage)
+        return deserialize(valueInLocalStorage)
       } 
       return defaultValue;
     }
   );
-  React.useEffect(() => window.localStorage.setItem(key, JSON.stringify(state)), [key, state])
+  React.useEffect(() => window.localStorage.setItem(key, serialize(state)), [key, serialize, state])
   return [state, setState];
 }
 
