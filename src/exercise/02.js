@@ -29,6 +29,7 @@ import * as React from 'react'
 
   //Extra Credit 4 - Refactor custom hook (useLocalStorageState) to support any data type
   //Provide client the option to serialize/deserialize manually
+  //Provide client the option to pass a value that is computationally expensive to create (e.g. a fx)
 function useLocalStorageState(
   key, 
   defaultValue = '', 
@@ -40,7 +41,7 @@ function useLocalStorageState(
       if(valueInLocalStorage) {
         return deserialize(valueInLocalStorage)
       } 
-      return defaultValue;
+      return typeof defaultValue === 'function' ? defaultValue() : defaultValue; // call the fx
     }
   );
   React.useEffect(() => window.localStorage.setItem(key, serialize(state)), [key, serialize, state])
