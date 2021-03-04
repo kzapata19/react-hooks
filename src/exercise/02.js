@@ -18,6 +18,7 @@ function Greeting({initialName = ''}) {
   //React.useEffect gets called after every component render (including re-renders). However, other situations 
   //(such as when a parent component in the app tree gets re-rendered) trigger re-rendering 
   //that are not relevant to local storage updates
+  //Source: check out KCD's explanation on egghead: https://egghead.io/lessons/react-store-values-in-localstorage-with-the-react-useeffect-hook
   function handleChange(event) {
     setName(event.target.value)
   }
